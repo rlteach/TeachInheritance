@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-public class Inventory  {
+public class Inventory  {		//Does not inherit from MonoBehaviour
 
 
-    public  bool NeedsDisplay {     //Have we changed, so does it need to be displayed?
+    public  bool NeedsDisplay {     //Has the invenrory changed, so does it need to be displayed?
         get {
             return mNeedsDisplay;
         }
@@ -37,11 +37,5 @@ public class Inventory  {
     public  void    Remove(Jewel vItem) {       //Remove jewel
         Items.Remove(vItem);
         mNeedsDisplay = true;
-    }
-
-    public  List<Jewel> Jewels {        //Allow access to Jewels
-        get {
-            return mJewels;
-        }
     }
 }

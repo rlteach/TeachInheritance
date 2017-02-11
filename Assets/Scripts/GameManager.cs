@@ -45,7 +45,8 @@ public class GameManager : Singleton {
     public  static  string  DebugText {     //Get Debug text
         get {
             StringBuilder tString = new StringBuilder();        //Faster than string + concat
-            tString.AppendFormat("Players:{0}", PlayerCount);
+			tString.AppendFormat("Items:{0}", GetPlayer(0).Inventory.Items.Count);
+			tString.AppendLine ();
             return tString.ToString();
         }
     }

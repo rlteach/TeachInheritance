@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: e79a81b3bfaa026468857647fd31cda3
-timeCreated: 1480109363
-licenseType: Free
+timeCreated: 1486850596
+licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
     21300000: Red
@@ -9,7 +9,7 @@ TextureImporter:
     21300004: Yellow
     21300006: Green
     21300008: Blue
-    21300010: Jewels_0
+    21300010: Purple
     21300012: White
   serializedVersion: 2
   mipmaps:
@@ -130,7 +130,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Jewels_0
+      name: Purple
       rect:
         serializedVersion: 2
         x: 326

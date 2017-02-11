@@ -22,13 +22,23 @@ public class ButtonActions : MonoBehaviour {
         }
     }
 
-    Jewel   RandomItem(Vector2 vPosition) {     //Make up random Jewels
-        int tRandom = Random.Range(1, 5);
+    public	Jewel   RandomItem(Vector2 vPosition) {     //Make up random Jewels
+        int tRandom = Random.Range(0, 7);
         switch(tRandom) {
+			case    0:
+				return  Jewel.Create<BlueStone>(vPosition);
             case    1:
-                return  Jewel.Create<RedRuby>(vPosition);
+                return  Jewel.Create<GreenEmerald>(vPosition);
             case    2:
                 return Jewel.Create<OrangeTigersEye>(vPosition);
+			case    3:
+				return Jewel.Create<PurpleStone>(vPosition);
+			case    4:
+				return Jewel.Create<RedRuby>(vPosition);
+			case    5:
+				return Jewel.Create<WhileDiamond>(vPosition);
+			case    6:
+				return Jewel.Create<YellowStone>(vPosition);
         }
         return null;
     }
