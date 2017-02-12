@@ -5,42 +5,66 @@ public class ButtonActions : MonoBehaviour {
 
     int mCount = 0;
 
-    public void Seed() {
-        mCount += 5;
+    public void SeedMore(int vMore) {
+        mCount += vMore;
         ReSeed();
+    }
+
+    public  void    Clear() {
+        mCount = 0;
+        GameManager.RemoveAllJewels();
     }
 
     public void    ReSeed() {
         if (mCount > 0) {
-            Vector2 tSize = GameManager.GameSize;
-            Vector2 tPosition = new Vector2(Random.Range(-tSize.x, tSize.x), Random.Range(-tSize.y, tSize.y));
-            Jewel tJewel = RandomItem(tPosition);
-            if (tJewel != null) {
-				GameManager.AddJewel (tJewel);		//Tell Game manager about new Jewel
-                mCount--;
-            }
+            Jewel tJewel = CreateJewel();
+            mCount--;
             Invoke("ReSeed", 1f);
         }
     }
 
-    public	Jewel   RandomItem(Vector2 vPosition) {     //Make up random Jewels
-        int tRandom = Random.Range(0, 7);
-        switch(tRandom) {
+    public  void    SeedJewel(int vNumber) {
+        CreateJewel(vNumber);
+    }
+    public Jewel CreateJewel() {     //Make Random Jewel at random position
+        int tNumber = Random.Range(0, Jewel.JewelTypeCount);
+        return CreateJewel(tNumber);
+    }
+
+    public Jewel CreateJewel(int vNumber) {     //Make a Jewel at random Position
+        Vector2 tSize = GameManager.GameSize;
+        Vector2 tPosition = new Vector2(Random.Range(-tSize.x, tSize.x), Random.Range(-tSize.y, tSize.y));
+        return  CreateJewel(vNumber,tPosition);
+    }
+
+    public Jewel   CreateJewel(int vNumber,Vector2 vPosition) {     //Make a jewel at a position
+        Jewel tJewel = null;
+        switch(vNumber) {
 			case    0:
-				return  Jewel.Create<BlueStone>(vPosition);
+                tJewel = Jewel.Create<BlueStone>(vPosition);
+                break;
             case    1:
-                return  Jewel.Create<GreenEmerald>(vPosition);
-            case    2:
-                return Jewel.Create<OrangeTigersEye>(vPosition);
-			case    3:
-				return Jewel.Create<PurpleStone>(vPosition);
-			case    4:
-				return Jewel.Create<RedRuby>(vPosition);
-			case    5:
-				return Jewel.Create<WhileDiamond>(vPosition);
-			case    6:
-				return Jewel.Create<YellowStone>(vPosition);
+                tJewel = Jewel.Create<GreenEmerald>(vPosition);
+                break;
+            case 2:
+                tJewel = Jewel.Create<OrangeTigersEye>(vPosition);
+                break;
+            case 3:
+                tJewel = Jewel.Create<PurpleStone>(vPosition);
+                break;
+            case 4:
+                tJewel = Jewel.Create<RedRuby>(vPosition);
+                break;
+            case 5:
+                tJewel = Jewel.Create<WhileDiamond>(vPosition);
+                break;
+            case 6:
+                tJewel = Jewel.Create<YellowStone>(vPosition);
+                break;
         }
-        return null;
+        if(tJewel!=null) {
+            GameManager.AddJewel(tJewel);		//Tell Game manager about new Jewel
+        }
+        return tJewel;
     }
 }

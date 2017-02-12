@@ -50,8 +50,9 @@ public class Player : MonoBehaviour {
         }
     }
 
-	public	void	PlayerHitGem(Jewel vJewel) {
-		GameManager.DebugMsg ("Player hit Gem:" + vJewel.GetType ().Name);
+    //Called by Jewel if player hit it
+	public	void	PlayerHitJewel(Jewel vJewel) {
+		GameManager.DebugMsg ("Player hit Jewel:" + vJewel.GetType ().Name);
 		Inventory.Add(vJewel);  //Add to player inventory
 	}
 

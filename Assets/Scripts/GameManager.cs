@@ -65,10 +65,18 @@ public class GameManager : Singleton {
 		GM.mJewels.Remove(vJewel);		//Remove Jewel from list
 		vJewel.Removed ();			//Tell Jewel its been removed
 	}
-	#endregion
+
+    public static void RemoveAllJewels() {
+        while(GM.mJewels.Count>0) {
+            Jewel tToRemove = GM.mJewels[0];        //Get copy before List removal
+            GM.mJewels.Remove(tToRemove);      //Remove Jewel from list
+            tToRemove.Removed();           //Tell Jewel its been removed
+        }
+    }
+    #endregion
 
 
-    public  static  string  DebugText {     //Get Debug text
+    public static  string  DebugText {     //Get Debug text
         get {
             StringBuilder tString = new StringBuilder();        //Faster than string + concat
 			tString.AppendFormat("Jewels:{0}",GM.mJewels.Count);
@@ -97,4 +105,31 @@ public class GameManager : Singleton {
 			|| vPosition.y > tGameSize.y);		//Check top
 	}
 
+    public  static  Vector3 ClampOnScreen(Vector3 vPosition) {
+        Vector2 tGameSize = GameSize;		//Cache for speed
+        vPosition.x = fmod(vPosition.x,GameSize.x);
+        vPosition.y = fmod(vPosition.y, GameSize.y);
+        return vPosition;
+    }
+
+    public static float fmod(float vNumber, float vModulus) {       //Floating point modulus, quite slow for big numbers as it uses repeated subtraction
+        vModulus = Mathf.Abs(vModulus);
+        if (vNumber > 0) {          //Deal with negative numbers
+            while (vNumber >= vModulus) {  //While bigger than modulus subtract
+                vNumber -= 2.0f*vModulus;
+            }
+        } else if (vNumber < 0) {       //Positive numbers
+            while (vNumber <= -vModulus) {
+                vNumber += 2.0f*vModulus;
+            }
+        }
+        return  vNumber;
+    }
+
+    public  static  Vector3 OnScreenRandomPosition {
+        get {
+            Vector2 tSize = GameManager.GameSize;
+            return  new Vector2(Random.Range(-tSize.x, tSize.x), Random.Range(-tSize.y, tSize.y));
+        }
+    }
 }
