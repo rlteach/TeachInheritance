@@ -5,7 +5,6 @@ using System.Collections;
 //abstract classes must be inherited, they cannot live on their own
 abstract	public class Jewel : MonoBehaviour {
 
-
 	static	Sprite[]	sSpriteSheet;		    //Used to load sprites just once when first used
 
     private static  Sprite mBlankTile;
@@ -14,13 +13,10 @@ abstract	public class Jewel : MonoBehaviour {
     readonly static string  sBlankSpriteFile = "EmptyTile";
     readonly static string  sTilePrefabName = "EmptyJewel";
 
-    static bool StaticsLoaded = false;
+	public	static	readonly	string	JewelTag = "Jewel";
 
-    readonly string[]	sSpriteNames = {"Red Ruby"
-											, "Orange Tigers Eye"
-											, "Yellow Citrine"
-											, "Green Emerald"
-	};
+
+    static bool StaticsLoaded = false;
 
 	SpriteRenderer	mSR;    //Cache sprite renderer    
 
@@ -40,10 +36,20 @@ abstract	public class Jewel : MonoBehaviour {
 	
 	}
 	
-	protected	virtual	void Update () {
-	
+	void Update () {
+		Move ();			//Get Item to Move
+		if(GameManager.OffScreen(transform.position)) {		//Check if item off screen
+			OffSceen ();		//Call OffScreen code
+		}
 	}
 
+	protected	virtual	void OffSceen() {
+		Destroy(gameObject);		//Default action is destroy game object
+	}
+
+	protected	virtual	void Move() {		//Called to move Object
+	}
+		
 	public	static	 Sprite	GetSpriteAtIndex(uint vIndex) {		//Allow inherted classes to get access to sprite sheet
 		if (sSpriteSheet != null) {
 			if (vIndex < sSpriteSheet.Length) {
@@ -93,14 +99,33 @@ abstract	public class Jewel : MonoBehaviour {
 		get;
 	}
 
-    protected virtual void OnTriggerEnter2D(Collider2D vOther) {        //Default handler, this add the item to the players inventory
-        if (vOther.tag == "Player") {
-            Destroy(gameObject);        //Destroy item
-            Player tPlayer = GameManager.GetPlayer(0);
-            if(tPlayer) {
-                Jewel tJewel = GetComponent<Jewel>();
-                tPlayer.Inventory.Add(tJewel);  //Add to player inventory
-            }
-        }
+    void OnTriggerEnter2D(Collider2D vOther) {        //Default handler, this add the item to the players inventory
+		Jewel tJewel = GetComponent<Jewel>();		//Get Jewel component
+		if (vOther.tag == Player.PlayerTag) {
+			Player tPlayer = vOther.GetComponent<Player> ();		//Get player we collided with
+			CollidedWithPlayer (tJewel, tPlayer);
+		} else if (vOther.tag == Jewel.JewelTag) {
+			Jewel tOtherJewel = vOther.GetComponent<Jewel> ();		//Get Jewel we collided with
+			CollidedWithJewel(tOtherJewel);
+		}
     }
+
+	protected	virtual void	CollidedWithPlayer(Jewel vJewel,Player vPlayer) {		//Default action
+		vPlayer.PlayerHitGem (vJewel);		//Notify player
+		GameManager.RemoveJewel(vJewel);		//Tell Game manager to remove Jewel
+	}
+
+	protected	virtual void	CollidedWithJewel(Jewel vOtherJewel) {
+		GameManager.RemoveJewel(vOtherJewel);		//Tell Game manager to remove other Jewel
+	}
+
+
+	public virtual void Removed() {		//Called when GameManager has removed Jewel
+		Destroy(gameObject);		//Default action is to destroy it
+	}
+
+
+	void OnDestroy() {			//Print Debug Message
+		GameManager.DebugMsg (GetType ().Name + " Destroyed");
+	}
 }

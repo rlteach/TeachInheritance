@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 
-public class ShowInventory : MonoBehaviour {
+public class InventoryDisplay : MonoBehaviour {
+
+	public	static  readonly string InventoryTag = "Inventory";
 
     static  readonly string sPrefabName = "InventoryTile";
 
     List<GameObject> mItems;        //List of items to display in Inventory
+
+	Player	mPlayer;
 
     void    Start() {
         mItems = new List<GameObject>();
@@ -20,10 +24,15 @@ public class ShowInventory : MonoBehaviour {
         }
     }
 
+	public	Player	SetPlayer {
+		set {
+			mPlayer = value;
+		}
+	}
+
     void    Update() {
-        Player tPlayer = GameManager.GetPlayer(0);      //Handle player 1
-        if(tPlayer!=null && tPlayer.Inventory.NeedsDisplay) {
-            UpdateInventory(tPlayer);
+        if(mPlayer!=null && mPlayer.Inventory.NeedsDisplay) {
+            UpdateInventory(mPlayer);
         }
     }
 

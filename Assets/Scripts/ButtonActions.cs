@@ -16,6 +16,7 @@ public class ButtonActions : MonoBehaviour {
             Vector2 tPosition = new Vector2(Random.Range(-tSize.x, tSize.x), Random.Range(-tSize.y, tSize.y));
             Jewel tJewel = RandomItem(tPosition);
             if (tJewel != null) {
+				GameManager.AddJewel (tJewel);		//Tell Game manager about new Jewel
                 mCount--;
             }
             Invoke("ReSeed", 1f);

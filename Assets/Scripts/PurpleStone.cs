@@ -16,8 +16,4 @@ public class PurpleStone : Jewel {
 			return 3;
 		}
 	}
-
-    protected override void OnTriggerEnter2D(Collider2D vOther) {
-        base.OnTriggerEnter2D(vOther);
-    }
 }

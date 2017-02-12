@@ -16,8 +16,4 @@ public class BlueStone : Jewel {
 			return 0;
 		}
 	}
-
-    protected override void OnTriggerEnter2D(Collider2D vOther) {
-        base.OnTriggerEnter2D(vOther);
-    }
 }

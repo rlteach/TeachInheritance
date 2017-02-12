@@ -17,7 +17,4 @@ public class RedRuby : Jewel {
 		}
 	}
 
-    protected override void OnTriggerEnter2D(Collider2D vOther) {
-        base.OnTriggerEnter2D(vOther);
-    }
 }

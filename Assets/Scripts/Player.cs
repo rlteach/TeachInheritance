@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
 
-    public ShowInventory ShowInventory;        // Link to to this player Inventory display
+	InventoryDisplay mInventoryDisplay;        // Link to to this player Inventory display
 
-    Inventory   mInventory;
+    Inventory   mInventory;		//Link to players Inventory
+
+	public	static	readonly	string	PlayerTag = "Player";
 
 
     [Header("Set Speed")]
@@ -18,6 +20,20 @@ public class Player : MonoBehaviour {
     void Start () {
         mInventory = new Inventory();	        //Give player a new inventory
         GameManager.AddPlayer(this);
+	}
+
+	public	InventoryDisplay SetInventoryDisplay {
+		set {
+			if (value != null) {		//Cross link Inventory Display and Player
+				mInventoryDisplay = value;
+				mInventoryDisplay.SetPlayer = this;
+			} else {
+				if (mInventoryDisplay != null) {		//Unlink Inventory Display
+					mInventoryDisplay.SetPlayer = null;
+				}
+				mInventoryDisplay = null;
+			}
+		}
 	}
 	
 	// Update is called once per frame
@@ -34,7 +50,18 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void Remove() {
+	public	void	PlayerHitGem(Jewel vJewel) {
+		GameManager.DebugMsg ("Player hit Gem:" + vJewel.GetType ().Name);
+		Inventory.Add(vJewel);  //Add to player inventory
+	}
+
+    public void Removed() {
         Destroy(gameObject);
     }
+
+	public	int	PlayerNumber {		//Get Player number from GameManager
+		get {
+			return	GameManager.PlayerNumber(this);
+		}
+	}
 }
